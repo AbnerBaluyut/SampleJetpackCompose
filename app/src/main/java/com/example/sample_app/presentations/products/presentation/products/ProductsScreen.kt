@@ -69,12 +69,19 @@ internal fun ProductsScreen(
         }
     }
 
+    fun changeTab(index: Int) {
+        viewModel.updateTabIndex(index = index)
+    }
+
     LoadingDialog(isLoading = state.isLoading)
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             ProductsAppBar(
-                title = "Dashboard"
+                title = "Dashboard",
+                onTapCart = {
+
+                }
             )
         }
     ) {
@@ -89,23 +96,24 @@ internal fun ProductsScreen(
             content = {
                 if (state.categories.isNotEmpty()) {
                     BuildCategoryTabs(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(60.dp),
                         items = state.categories,
                         selectedTabIndex = state.tabIndex,
                         onTabClick = { index ->
-                            viewModel.updateTabIndex(index = index)
+                            changeTab(index = index)
                             scrollToPage(index = index)
                         },
                     )
                     HorizontalDivider(
                         modifier = Modifier.fillMaxWidth(),
-                        thickness = 0.5.dp,
-                        color = Color.Gray
+                        thickness = 0.8.dp,
+                        color = Color.Gray.copy(alpha = 0.5f)
                     )
                 }
                 LaunchedEffect(pagerState.currentPage) {
-                    val currentPageIndex = pagerState.currentPage
-                    viewModel.updateTabIndex(currentPageIndex)
+                    changeTab(index = pagerState.currentPage)
                 }
                 HorizontalPager(
                     modifier = Modifier.fillMaxSize(),
