@@ -1,7 +1,7 @@
 package com.example.sample_app.di
 
+import com.example.sample_app.core.data.ApiService
 import com.example.sample_app.core.util.Constant
-import com.example.sample_app.presentations.products.data.remote.ProductsRemoteSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,11 +16,11 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideProductsRemoteSource() : ProductsRemoteSource {
+    fun provideApiService() : ApiService {
         return Retrofit.Builder()
             .baseUrl(Constant.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(ProductsRemoteSource::class.java)
+            .create(ApiService::class.java)
     }
 }

@@ -7,4 +7,5 @@ sealed class Screen(val route: String) {
             return "product_detail?id=$id&json=$json"
         }
     }
+    data object Cart: Screen("cart")
 }

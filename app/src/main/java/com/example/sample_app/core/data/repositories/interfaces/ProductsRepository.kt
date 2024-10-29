@@ -1,8 +1,8 @@
-package com.example.sample_app.presentations.products.domain.repository
+package com.example.sample_app.core.data.repositories.interfaces
 
 import arrow.core.Either
 import com.example.sample_app.core.NetworkError
-import com.example.sample_app.presentations.products.domain.model.Product
+import com.example.sample_app.core.data.models.Product
 
 interface ProductsRepository {
 

@@ -1,4 +1,4 @@
-package com.example.sample_app.presentations.products.data.mapper
+package com.example.sample_app.core.extensions
 
 import com.example.sample_app.core.ApiError
 import com.example.sample_app.core.NetworkError

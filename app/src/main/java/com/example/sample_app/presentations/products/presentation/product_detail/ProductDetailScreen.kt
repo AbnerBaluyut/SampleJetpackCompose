@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.sample_app.core.util.isPortrait
-import com.example.sample_app.presentations.products.domain.model.Product
+import com.example.sample_app.core.data.models.Product
 import com.example.sample_app.presentations.products.presentation.product_detail._components.ProductDetailAppBar
 
 @Composable

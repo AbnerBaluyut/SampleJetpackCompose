@@ -1,8 +1,10 @@
 package com.example.sample_app.di
 
-import com.example.sample_app.presentations.products.data.remote.ProductsRemoteSource
-import com.example.sample_app.presentations.products.data.repository.ProductsRepositoryImpl
-import com.example.sample_app.presentations.products.domain.repository.ProductsRepository
+import com.example.sample_app.core.data.ApiService
+import com.example.sample_app.core.data.repositories.impl.CartRepositoryImpl
+import com.example.sample_app.core.data.repositories.impl.ProductsRepositoryImpl
+import com.example.sample_app.core.data.repositories.interfaces.CartRepository
+import com.example.sample_app.core.data.repositories.interfaces.ProductsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,13 +13,21 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-class RepositoryModule {
+object RepositoryModule {
 
     @Provides
     @Singleton
-    fun bindProductsRepository(remoteSource: ProductsRemoteSource) : ProductsRepository {
+    fun provideProductsRepository(apiService: ApiService) : ProductsRepository {
         return ProductsRepositoryImpl(
-            remoteSource = remoteSource
+            apiService = apiService
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideCartRepository(apiService: ApiService): CartRepository {
+        return CartRepositoryImpl(
+            apiService = apiService
         )
     }
 }

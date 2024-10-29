@@ -6,4 +6,5 @@ object Constant {
 
     const val PRODUCTS = "products"
     const val CATEGORIES = "products/categories"
+    const val CARTS = "carts"
 }

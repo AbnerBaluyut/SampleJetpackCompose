@@ -8,7 +8,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.sample_app.core.ArgKey
 import com.example.sample_app.core.extensions.fromJson
-import com.example.sample_app.presentations.products.domain.model.Product
+import com.example.sample_app.presentations.cart.presentation.CartScreen
+import com.example.sample_app.core.data.models.Product
 import com.example.sample_app.presentations.products.presentation.product_detail.ProductDetailScreen
 import com.example.sample_app.presentations.products.presentation.products.ProductsScreen
 
@@ -34,6 +35,9 @@ fun AppNavigation() {
             val productJson = it.arguments?.getString(ArgKey.JSON)
             val product = productJson?.fromJson<Product>()
             ProductDetailScreen(navController = navController, product = product)
+        }
+        composable(route = Screen.Cart.route) {
+            CartScreen(navController = navController)
         }
     }
 }

@@ -4,12 +4,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -20,18 +17,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
-import java.util.Locale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.example.sample_app.presentations.products.domain.model.Product
-import java.text.NumberFormat
+import com.example.sample_app.core.extensions.toNumberFormat
+import com.example.sample_app.core.data.models.Product
 
 @Composable
 fun ItemProduct(
     modifier: Modifier = Modifier,
-    product: Product
+    product: Product,
+    onClick: () -> Unit
 ) {
     Card(
         modifier = modifier,
@@ -42,6 +39,7 @@ fun ItemProduct(
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         ),
+        onClick = onClick,
         content = {
             Column(
                 modifier =  Modifier
@@ -55,11 +53,7 @@ fun ItemProduct(
                         contentDescription = product.image,
                         modifier = Modifier
                             .fillMaxSize()
-                            .width(180.dp)
-                            .height(150.dp)
-                            .padding(
-                                horizontal = 30.dp
-                            ),
+                            .height(150.dp),
                         alignment = Alignment.Center,
                         contentScale = ContentScale.FillBounds
                     )
@@ -90,7 +84,6 @@ fun ItemProduct(
 fun BuildPrice(
     price: Double
 ) {
-    val formattedPrice = NumberFormat.getCurrencyInstance(Locale.getDefault()).format(price)
     Row(
         modifier = Modifier.fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically,
@@ -102,7 +95,7 @@ fun BuildPrice(
                 fontWeight = FontWeight.SemiBold,
             )
             Text(
-                text = formattedPrice,
+                text = price.toNumberFormat(),
                 fontSize = 14.sp,
                 color = Color.Black,
                 fontWeight = FontWeight.Normal,

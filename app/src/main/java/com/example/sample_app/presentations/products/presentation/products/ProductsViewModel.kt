@@ -1,13 +1,14 @@
 package com.example.sample_app.presentations.products.presentation.products
 
-import android.util.Log
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sample_app.core.extensions.sendEvent
 import com.example.sample_app.core.util.Event
-import com.example.sample_app.presentations.products.domain.repository.ProductsRepository
+import com.example.sample_app.presentations.products.domain.GetCategoriesUseCase
+import com.example.sample_app.presentations.products.domain.GetProductsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Delay
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,11 +18,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductsViewModel @Inject constructor(
-    private val productsRepository: ProductsRepository
+    private val getProductsUseCase: GetProductsUseCase,
+    private val getCategoriesUseCase: GetCategoriesUseCase
 ): ViewModel() {
 
-    private val _state = MutableStateFlow(ProductsScreenState())
-    val state: StateFlow<ProductsScreenState> get() = _state.asStateFlow()
+    private val _state = MutableStateFlow(ProductsViewState())
+    val state: StateFlow<ProductsViewState> get() = _state.asStateFlow()
 
     init {
         onInit()
@@ -35,7 +37,7 @@ class ProductsViewModel @Inject constructor(
 
     private suspend fun getCategories() {
         setIsLoading(isLoading = true)
-        productsRepository.getCategories()
+        getCategoriesUseCase.execute()
             .onRight { categories ->
                 _state.update {
                     it.copy(
@@ -45,11 +47,7 @@ class ProductsViewModel @Inject constructor(
                 getProducts()
             }
             .onLeft { error ->
-                _state.update {
-                    it.copy(
-                        error = error.error.message
-                    )
-                }
+                setErrorMessage(error = error.error.message)
                 sendEvent(Event.Toast(message = "Something Went Wrong"))
                 setIsLoading(isLoading = false)
             }
@@ -57,24 +55,29 @@ class ProductsViewModel @Inject constructor(
 
     private suspend fun getProducts() {
 
-        productsRepository.getProducts()
+        getProductsUseCase.execute()
             .onRight { products ->
                 _state.update {
                     it.copy(
                         products = products
                     )
                 }
+                delay(2000)
                 setIsLoading(isLoading = false)
             }
             .onLeft { error ->
-                _state.update {
-                    it.copy(
-                        error = error.error.message
-                    )
-                }
+                setErrorMessage(error = error.error.message)
                 sendEvent(Event.Toast(message = "Something Went Wrong"))
                 setIsLoading(isLoading = false)
             }
+    }
+
+    private fun setErrorMessage(error: String) {
+        _state.update {
+            it.copy(
+                error = error
+            )
+        }
     }
 
     private fun setIsLoading(isLoading: Boolean) {
