@@ -41,8 +41,13 @@ class CartViewModel @Inject constructor(
         }
     }
 
-    private fun getCarts() {
+    fun getCarts() {
         viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    items = emptyList()
+                )
+            }
             setIsLoading(isLoading = true)
             getCartsUseCase.execute()
                 .onRight { items ->

@@ -29,7 +29,7 @@ class ProductsViewModel @Inject constructor(
         onInit()
     }
 
-    private fun onInit() {
+    fun onInit() {
         viewModelScope.launch {
             getCategories()
         }
