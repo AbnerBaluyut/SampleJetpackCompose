@@ -2,8 +2,8 @@ package com.example.sample_app.di
 
 import com.example.sample_app.core.data.repositories.interfaces.CartRepository
 import com.example.sample_app.core.data.repositories.interfaces.ProductsRepository
-import com.example.sample_app.presentations.cart.domain.GetCartsUseCase
-import com.example.sample_app.presentations.cart.domain.GetCartsUseCaseImpl
+import com.example.sample_app.presentations.cart.domain.usecases.GetCartsUseCase
+import com.example.sample_app.presentations.cart.domain.usecases.GetCartsUseCaseImpl
 import com.example.sample_app.presentations.products.domain.GetCategoriesUseCase
 import com.example.sample_app.presentations.products.domain.GetCategoriesUseCaseImpl
 import com.example.sample_app.presentations.products.domain.GetProductsUseCase

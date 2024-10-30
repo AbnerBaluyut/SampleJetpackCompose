@@ -1,4 +1,4 @@
-package com.example.sample_app.presentations.cart.domain
+package com.example.sample_app.presentations.cart.domain.usecases
 
 import arrow.core.Either
 import com.example.sample_app.core.NetworkError

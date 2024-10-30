@@ -71,7 +71,9 @@ internal fun ProductsScreen(
             ProductsAppBar(
                 title = "Dashboard",
                 onTapCart = {
-                    navController.navigate(Screen.Cart.route)
+                    navController.navigate(Screen.Cart.createRoute(
+                        json = state.products.toJson()
+                    ))
                 }
             )
         }

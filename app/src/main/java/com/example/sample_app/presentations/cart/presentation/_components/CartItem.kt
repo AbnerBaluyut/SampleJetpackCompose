@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -31,16 +32,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.sample_app.R
 import com.example.sample_app.core.extensions.toNumberFormat
 import com.example.sample_app.core.ui.theme.Purple30
+import com.example.sample_app.presentations.cart.domain.entities.CartEntity
 
 @Composable
-fun CartItem(title: String) {
-    var quantity by remember { mutableIntStateOf(1) }
+fun CartItem(item: CartEntity) {
+    var quantity by remember { mutableIntStateOf(item.quantity) }
 
     Box(
         modifier = Modifier
@@ -60,10 +63,9 @@ fun CartItem(title: String) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start,
             content = {
-                val imageString = "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg"
                 AsyncImage(
-                    model = imageString,
-                    contentDescription = imageString,
+                    model = item.image,
+                    contentDescription = null,
                     modifier = Modifier
                         .height(80.dp)
                         .width(80.dp),
@@ -73,26 +75,26 @@ fun CartItem(title: String) {
                 Spacer(modifier = Modifier.width(10.dp))
                 Column(
                     modifier = Modifier
+                        .weight(1f)
                         .padding(8.dp),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.Start,
                     content = {
                         Text(
-                            title,
+                            text = item.name,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Normal,
                             color = Purple30
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            (100.0 * quantity).toNumberFormat(),
+                            (item.price * quantity).toNumberFormat(),
                             fontSize = 14.sp,
                             fontWeight = FontWeight.ExtraBold,
                             color = Purple30
                         )
                     }
                 )
-                Spacer(modifier = Modifier.weight(1f))
                 Column(
                     modifier = Modifier
                         .padding(8.dp),

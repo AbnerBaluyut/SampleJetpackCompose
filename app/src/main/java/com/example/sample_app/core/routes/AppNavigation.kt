@@ -1,5 +1,6 @@
 package com.example.sample_app.core.routes
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -10,6 +11,7 @@ import com.example.sample_app.core.ArgKey
 import com.example.sample_app.core.extensions.fromJson
 import com.example.sample_app.presentations.cart.presentation.CartScreen
 import com.example.sample_app.core.data.models.Product
+import com.example.sample_app.core.extensions.fromJsonToList
 import com.example.sample_app.presentations.products.presentation.product_detail.ProductDetailScreen
 import com.example.sample_app.presentations.products.presentation.products.ProductsScreen
 
@@ -36,8 +38,17 @@ fun AppNavigation() {
             val product = productJson?.fromJson<Product>()
             ProductDetailScreen(navController = navController, product = product)
         }
-        composable(route = Screen.Cart.route) {
-            CartScreen(navController = navController)
+        composable(
+            route = Screen.Cart.route,
+            arguments = listOf(
+                navArgument(ArgKey.JSON) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val productsJson = it.arguments?.getString(ArgKey.JSON)
+            val products = productsJson?.fromJsonToList<Product>()
+            CartScreen(navController = navController, products = products ?: emptyList())
         }
     }
 }

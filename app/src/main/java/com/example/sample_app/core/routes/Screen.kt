@@ -7,5 +7,9 @@ sealed class Screen(val route: String) {
             return "product_detail?id=$id&json=$json"
         }
     }
-    data object Cart: Screen("cart")
+    data object Cart: Screen("cart?json={json}") {
+        fun createRoute(json: String): String {
+            return "cart?json=$json"
+        }
+    }
 }
