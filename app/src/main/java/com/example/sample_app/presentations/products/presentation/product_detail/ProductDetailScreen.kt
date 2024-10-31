@@ -1,5 +1,6 @@
 package com.example.sample_app.presentations.products.presentation.product_detail
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -14,19 +15,28 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
+import com.example.sample_app.R
 import com.example.sample_app.core.util.isPortrait
 import com.example.sample_app.core.data.models.Product
 import com.example.sample_app.presentations.products.presentation.product_detail._components.ProductDetailAppBar
@@ -98,6 +108,8 @@ internal fun ProductDetailScreen(navController: NavController, product: Product?
 
 @Composable
 fun BuildImage(image: String?) {
+    var isLoading by remember { mutableStateOf(true) }
+    var isError by remember { mutableStateOf(false) }
 
     BoxWithConstraints(
         modifier = Modifier
@@ -112,8 +124,36 @@ fun BuildImage(image: String?) {
                 alignment = Alignment.Center,
                 modifier = Modifier
                     .size(getSize),
-                contentScale = ContentScale.Fit
+                contentScale = ContentScale.Fit,
+                onState = { state ->
+                    when (state) {
+                        is AsyncImagePainter.State.Loading -> {
+                            isLoading = true
+                            isError = false
+                        }
+                        is AsyncImagePainter.State.Success -> {
+                            isLoading = false
+                            isError = false
+                        }
+                        is AsyncImagePainter.State.Error -> {
+                            isLoading = false
+                            isError = true
+                        }
+                        else -> { }
+                    }
+                }
             )
+            if (isLoading) {
+                CircularProgressIndicator()
+            }
+            if (isError) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_launcher_foreground), // Replace with your error drawable
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(Color.Red),
+                    modifier = Modifier.matchParentSize()
+                )
+            }
         }
     )
 }

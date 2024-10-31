@@ -67,7 +67,7 @@ internal fun ProductsScreen(
         viewModel.updateTabIndex(index = index)
     }
 
-    LoadingDialog(isLoading = state.isLoading)
+    LoadingDialog(isLoading = if (state.isPullToRefresh) false else state.isLoading)
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -87,9 +87,12 @@ internal fun ProductsScreen(
                 .padding(
                     top = it.calculateTopPadding(),
                 ),
-            isRefreshing = state.isLoading,
+            isRefreshing = state.isPullToRefresh,
             onRefresh = {
-                viewModel.onInit()
+                viewModel.apply {
+                    setIsPullToRefresh(value = true)
+                    onInit()
+                }
             }
         ) {
             Column(

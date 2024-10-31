@@ -64,11 +64,13 @@ class ProductsViewModel @Inject constructor(
                 }
                 delay(2000)
                 setIsLoading(isLoading = false)
+                setIsPullToRefresh(value = false)
             }
             .onLeft { error ->
                 setErrorMessage(error = error.error.message)
                 sendEvent(Event.Toast(message = "Something Went Wrong"))
                 setIsLoading(isLoading = false)
+                setIsPullToRefresh(value = false)
             }
     }
 
@@ -95,6 +97,14 @@ class ProductsViewModel @Inject constructor(
                     tabIndex = index
                 )
             }
+        }
+    }
+
+    fun setIsPullToRefresh(value: Boolean) {
+        _state.update {
+            it.copy(
+                isPullToRefresh = value
+            )
         }
     }
 }
