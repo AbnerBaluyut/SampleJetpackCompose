@@ -52,7 +52,7 @@ class CartViewModel @Inject constructor(
             getCartsUseCase.execute()
                 .onRight { items ->
 
-                    val getItemByUserId = items.first { it.userId == 1 }
+                    val getItemByUserId = items.last { it.userId == 1 }
                     val cartEntities: List<CartEntity> = getItemByUserId.products.map { item ->
                         val filterProduct = _products.firstOrNull { it.id == item.id }
                         CartEntity(
@@ -71,19 +71,10 @@ class CartViewModel @Inject constructor(
 
                     delay(2000)
                     setIsLoading(isLoading = false)
-                }.onLeft { error ->
-                    setErrorMessage(error = error.error.message)
+                }.onLeft {
                     sendEvent(Event.Toast(message = "Something Went Wrong"))
                     setIsLoading(isLoading = false)
                 }
-        }
-    }
-
-    private fun setErrorMessage(error: String) {
-        _state.update {
-            it.copy(
-                error = error
-            )
         }
     }
 

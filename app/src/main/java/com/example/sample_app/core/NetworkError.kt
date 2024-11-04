@@ -1,5 +1,6 @@
 package com.example.sample_app.core
 
+
 data class NetworkError(
     val error: ApiError,
     val t: Throwable? = null

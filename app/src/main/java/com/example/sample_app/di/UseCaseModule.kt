@@ -2,6 +2,8 @@ package com.example.sample_app.di
 
 import com.example.sample_app.core.data.repositories.interfaces.CartRepository
 import com.example.sample_app.core.data.repositories.interfaces.ProductsRepository
+import com.example.sample_app.presentations.cart.domain.usecases.AddToCartUseCase
+import com.example.sample_app.presentations.cart.domain.usecases.AddToCartUseCaseImpl
 import com.example.sample_app.presentations.cart.domain.usecases.GetCartsUseCase
 import com.example.sample_app.presentations.cart.domain.usecases.GetCartsUseCaseImpl
 import com.example.sample_app.presentations.products.domain.GetCategoriesUseCase
@@ -38,6 +40,14 @@ object UseCaseModule {
     @Singleton
     fun provideGetCartsUseCase(repository: CartRepository): GetCartsUseCase {
         return GetCartsUseCaseImpl(
+            repository = repository
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideAddToCartUseCase(repository: CartRepository): AddToCartUseCase {
+        return AddToCartUseCaseImpl(
             repository = repository
         )
     }

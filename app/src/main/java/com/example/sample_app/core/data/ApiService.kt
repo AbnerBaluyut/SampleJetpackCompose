@@ -3,7 +3,11 @@ package com.example.sample_app.core.data
 import com.example.sample_app.core.data.models.Cart
 import com.example.sample_app.core.util.Constant
 import com.example.sample_app.core.data.models.Product
+import com.example.sample_app.presentations.cart.domain.payload.AddToCartParam
+import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 
 
 interface ApiService {
@@ -16,4 +20,7 @@ interface ApiService {
 
     @GET(Constant.CARTS)
     suspend fun getCarts(): List<Cart>
+
+    @POST(Constant.CARTS)
+    suspend fun addToCart(@Body param: AddToCartParam): Cart
 }

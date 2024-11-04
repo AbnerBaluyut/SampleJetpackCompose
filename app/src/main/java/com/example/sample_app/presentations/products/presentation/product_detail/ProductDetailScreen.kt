@@ -33,6 +33,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
@@ -42,7 +44,15 @@ import com.example.sample_app.core.data.models.Product
 import com.example.sample_app.presentations.products.presentation.product_detail._components.ProductDetailAppBar
 
 @Composable
-internal fun ProductDetailScreen(navController: NavController, product: Product?) {
+internal fun ProductDetailScreen(
+    navController: NavController,
+    product: Product?,
+    viewModel: ProductDetailViewModel = hiltViewModel()
+) {
+
+
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -86,15 +96,24 @@ internal fun ProductDetailScreen(navController: NavController, product: Product?
                     )
                     Button(
                         onClick = {
-
+                            viewModel.addToCart(
+                                product = product
+                            )
                         },
+                        enabled = !state.isLoading,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 14.dp),
                         content = {
-                            Text(
-                                text = "Add to cart"
-                            )
+                            if (state.isLoading) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(20.dp),
+                                )
+                            } else {
+                                Text(
+                                    text = "Add to cart"
+                                )
+                            }
                         }
                     )
                     Spacer(

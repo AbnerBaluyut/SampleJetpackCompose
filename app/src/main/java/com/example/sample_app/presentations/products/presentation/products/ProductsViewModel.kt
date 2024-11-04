@@ -42,12 +42,11 @@ class ProductsViewModel @Inject constructor(
                 _state.update {
                     it.copy(
                         categories = categories
-                    );
+                    )
                 }
                 getProducts()
             }
-            .onLeft { error ->
-                setErrorMessage(error = error.error.message)
+            .onLeft {
                 sendEvent(Event.Toast(message = "Something Went Wrong"))
                 setIsLoading(isLoading = false)
             }
@@ -66,20 +65,11 @@ class ProductsViewModel @Inject constructor(
                 setIsLoading(isLoading = false)
                 setIsPullToRefresh(value = false)
             }
-            .onLeft { error ->
-                setErrorMessage(error = error.error.message)
+            .onLeft {
                 sendEvent(Event.Toast(message = "Something Went Wrong"))
                 setIsLoading(isLoading = false)
                 setIsPullToRefresh(value = false)
             }
-    }
-
-    private fun setErrorMessage(error: String) {
-        _state.update {
-            it.copy(
-                error = error
-            )
-        }
     }
 
     private fun setIsLoading(isLoading: Boolean) {
