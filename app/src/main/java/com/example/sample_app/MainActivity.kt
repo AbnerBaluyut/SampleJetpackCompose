@@ -16,7 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.sample_app.core.routes.AppNavigation
 import com.example.sample_app.core.util.Event
 import com.example.sample_app.core.util.EventBus
-import com.example.sample_app.core.ui.theme.Sample_appTheme
+import com.example.sample_app.core.ui.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            Sample_appTheme {
+            AppTheme {
                 val lifecycle = LocalLifecycleOwner.current.lifecycle
                 LaunchedEffect(key1 = lifecycle) {
                     repeatOnLifecycle(state = Lifecycle.State.STARTED) {
